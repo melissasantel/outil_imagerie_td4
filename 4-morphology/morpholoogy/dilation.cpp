@@ -15,7 +15,10 @@ process(const char* sename, const char* imsname, const char* imdname)
   //Declare variables
   //Read the image given in value
   Mat ims = imread(imsname, 0);
-  mm(sename, ims, )
+  Mat se = imread(sename,0);
+  Mat imd(ims.size(), CV_8UC1);
+  mm(se, ims, imd, maximum );
+  imwrite(imdname,imd);
 
 }
 
