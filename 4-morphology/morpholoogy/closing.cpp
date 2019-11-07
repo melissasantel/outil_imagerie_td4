@@ -9,7 +9,7 @@ using namespace std;
 void
 process(const char* sename, const char* imsname, const char* imdname)
 {
-  cout<< "\n############### exercice : dilation  ###############\n"<<endl;
+  cout<< "\n############### exercice : closing  ###############\n"<<endl;
 
   //Declare variables
   //Read the image given in value
@@ -27,8 +27,10 @@ process(const char* sename, const char* imsname, const char* imdname)
     exit(EXIT_FAILURE);
   }
 
+  Mat imd_inter(ims.size(), CV_8UC1);
   Mat imd(ims.size(), CV_8UC1);
-  mm(se, ims, imd, maximum);
+  mm(se, ims, imd_inter, maximum);
+  mm(se,imd_inter,imd,minimum);
 
   imwrite(imdname,imd);
 

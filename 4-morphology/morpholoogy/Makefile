@@ -14,7 +14,11 @@ OBJ= morphology.o
 BIN= \
 	make-se\
 	dilation\
-	labeling
+	erosion\
+	opening\
+	closing\
+	labeling\
+	labeling-color
 
 .PHONY: all
 all: $(BIN)

@@ -5,27 +5,24 @@ using namespace cv;
 void
 mm(Mat se, Mat ims, Mat imd, void (*pf)(uchar, uchar*))
 {
+
   Size size_se = se.size();
   Size size_ims = ims.size();
-  int radius = (se.width-1)/2;
-  uchar max;
-  int center_shape_value;
-
+  int radius = (size_se.width-1)/2;
+  uchar max_min;
   for ( int i = 0; i < size_ims.height; i++ ){
     for ( int j = 0; j < size_ims.width; j++ ){
-      center_shape_value = ims.at(i,j);
-      max_min = center_shape_value;
-      for ( int m = -radius; m <= radius; m++ ){
-        for ( int n = -radius; n <= radius; n++){
-          if ( ((i+m < 0) || (i+m > size_ims.height)) || ((j+n < 0) || (j+n > size_ims.width)) ) //seg fault
+      max_min = ims.ptr<uchar>(i)[j];
+      for ( int u = -radius; u <= radius; u++ ){
+        for ( int v = -radius; v <= radius; v++){
+          if ( ((i+u < 0) || (i+u > size_ims.height)) || ((j+v < 0) || (j+v > size_ims.width)) ) //seg fault
             continue;
-          if ( ims.ptr<uchar>(m)[n] == 255 ){
-            pf(ims.ptr<uchar>(i+m)[j+n], &max);
+          if (se.ptr<uchar>(u+radius)[v+radius] == 255 ){
+            pf(ims.ptr<uchar>(i+u)[j+v], &max_min);
           }
-          // uchar* i_line_pointer = ims.ptr<uchar>(i+m);
-          // current ims pixel is i_line_pointer[j+n]
         }
       }
+      imd.ptr<uchar>(i)[j] = max_min;
     }
   }
 }
@@ -33,13 +30,15 @@ mm(Mat se, Mat ims, Mat imd, void (*pf)(uchar, uchar*))
 void
 maximum(uchar val, uchar* max)
 {
-  if ( val > *max )
+  if ( val > *max ){
     *max = val;
+  }
 }
 
 void
 minimum(uchar val, uchar* min)
 {
-  if ( val < *min )
+  if ( val < *min ){
     *min = val;
+  }
 }

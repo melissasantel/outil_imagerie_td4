@@ -8,7 +8,7 @@
 
 /**
  * @brief  compute a morphological dilation or erosion on a grayscale image
- *         with a given structuring element. Dilation or erosion 
+ *         with a given structuring element. Dilation or erosion
  *         processing depends on an order function  defined by the pointer pf
  * @param  se: the structing element shape umber
  * @param  ims: the input image source to process
@@ -34,5 +34,3 @@ maximum(uchar val, uchar* max);
  */
 void
 minimum(uchar val, uchar* min);
-
-

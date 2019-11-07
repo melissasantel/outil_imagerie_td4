@@ -108,10 +108,7 @@ process(const int shape, const int halfsize, const char* imdname)
       }
     }
   }
-
-  // imshow(imdname, imd);
   imwrite(imdname, imd);
-  // waitKey(0);
 }
 
 void

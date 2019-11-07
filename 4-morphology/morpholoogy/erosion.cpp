@@ -9,7 +9,7 @@ using namespace std;
 void
 process(const char* sename, const char* imsname, const char* imdname)
 {
-  cout<< "\n############### exercice : dilation  ###############\n"<<endl;
+  cout<< "\n############### exercice : erosion  ###############\n"<<endl;
 
   //Declare variables
   //Read the image given in value
@@ -26,9 +26,8 @@ process(const char* sename, const char* imsname, const char* imdname)
     cerr<<"Image not found, exit"<<endl;
     exit(EXIT_FAILURE);
   }
-
   Mat imd(ims.size(), CV_8UC1);
-  mm(se, ims, imd, maximum);
+  mm(se, ims, imd, minimum);
 
   imwrite(imdname,imd);
 
