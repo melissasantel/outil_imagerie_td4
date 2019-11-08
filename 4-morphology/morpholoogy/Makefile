@@ -19,6 +19,7 @@ BIN= \
 	closing\
 	labeling\
 	labeling-color
+	# binarization
 
 .PHONY: all
 all: $(BIN)
@@ -35,10 +36,16 @@ test-deploy: all
 .PHONY: extract-gear
 extract-gear:
 	$(VIEWER) $(DATA)/gear.png;
+	./opening disk-10.png $(DATA)/gear.png $(DATA)/gear_extracted.png
+	$(VIEWER) $(DATA)/gear_extracted.png;
+	composite -compose difference $(DATA)/gear_extracted.png $(DATA)/gear.png $(DATA)/gear_res.png
+	$(VIEWER) $(DATA)/gear_res.png;
+	./binarization 130 255 $(DATA)/gear_res.png $(DATA)/gear_res_int.png;
+	./labeling-color $(DATA)/gear_res_int.png $(DATA)/gear_res_r.png $(DATA)/gear_res_color.png;
 
 .PHONY: extract-cell
 extract-cell:
-	$(VIEWER) $(DATA)/cell.png;
+	$(VIEWER) $(DATA)/cell.png2
 	./labeling $(DATA)/cell-bin.png
 
 .PHONY: clean

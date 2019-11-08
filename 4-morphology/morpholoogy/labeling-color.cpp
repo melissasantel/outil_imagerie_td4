@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <vector>
 
 #include <opencv2/opencv.hpp>
 
@@ -40,12 +41,14 @@ _add(int p, int r, int* roots)
 }
 
 void
-process(const char* imsname)
+process(const char* imsname, const char* regname, const char* colorname)
 {
+  // (void) regname;
+  // (void) colorname;
   cout<< "\n############### exercice : labeling-color ###############\n"<<endl;
 
   Mat ims = imread(imsname);
-
+  Size ims_size = ims.size();
   if(!ims.data){
     cerr<<"Image not found, exit"<<endl;
     exit(EXIT_FAILURE);
@@ -53,12 +56,14 @@ process(const char* imsname)
 
   cvtColor(ims, ims, CV_BGR2GRAY);
 
-  int* roots = new int[ims.total()];
+  int* roots = new int[ims.total()]; //get numbers of pixels
   int  rows  = ims.rows;
   int  cols  = ims.cols;
   int p      = 0;
   int r      = -1;
-  uchar* ps  = ims.data;
+  uchar* ps  = ims.data; //get data from ims
+  const int NB_COLORS = 20;
+  RNG rng(125862);
 
   for(int i=0; i<rows; i++){
     for(int j=0; j<cols; j++){
@@ -86,6 +91,12 @@ process(const char* imsname)
   for(p=0; p<rows*cols; p++){
     roots[p] = _find(p, roots);
   }
+  //Create the image cell_r;
+  Mat imd_cellr (ims_size, CV_8UC1);
+  //Create Mat corresponding image cell_rh's equalized histogram;
+  Mat imd_cellrh (ims_size, CV_8UC1);
+  //
+  Mat imd_cellc(ims_size,CV_8UC3);
 
   int l=0;
   for(int i=0; i<rows; i++){
@@ -95,11 +106,38 @@ process(const char* imsname)
 	roots[p] = l++;
       else
 	roots[p] = roots[roots[p]];
+  imd_cellr.ptr<uchar>(i)[j] = roots[p];
     }
   }
+  //Save the image imd_cellr
+  // imwrite(regname,imd_cellr);
+  imshow(regname,imd_cellr);
 
+
+  //Make the eqalize histogram of the imd_cellr to fill imd_cellrh
+  equalizeHist(imd_cellr, imd_cellrh);
+  imshow(regname,imd_cellrh);
+
+  vector<Vec3b> colors;
+  for (int i = 0; i < NB_COLORS; i++){
+    Vec3b color(rng.uniform(0,255),rng.uniform(0,255),rng.uniform(0,255));
+    colors.push_back(color);
+  }
+
+  for (int i=0; i<ims_size.height; i++){
+    for (int j=0; j<ims_size.width; j++){
+      int current_color = (int)imd_cellr.ptr<uchar>(i)[j];
+      if(current_color > 0)
+        imd_cellc.ptr<Vec3b>(i)[j] = colors[current_color];
+    }
+
+  }
+  imshow(colorname, imd_cellc);
+  imwrite(colorname,imd_cellc);
   cout<<"labeling: "<< l << " components detected"<<endl;
   delete [] roots;
+
+  waitKey(0);
 }
 
 void
@@ -109,12 +147,12 @@ usage (const char *s)
   exit(EXIT_FAILURE);
 }
 
-#define param 1
+#define param 3
 int
 main( int argc, char* argv[] )
 {
   if(argc != (param+1))
     usage(argv[0]);
-  process(argv[1]);
+  process(argv[1],argv[2],argv[3]);
   return EXIT_SUCCESS;
 }

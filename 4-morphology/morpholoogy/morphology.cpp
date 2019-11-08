@@ -5,7 +5,6 @@ using namespace cv;
 void
 mm(Mat se, Mat ims, Mat imd, void (*pf)(uchar, uchar*))
 {
-
   Size size_se = se.size();
   Size size_ims = ims.size();
   int radius = (size_se.width-1)/2;
@@ -15,10 +14,12 @@ mm(Mat se, Mat ims, Mat imd, void (*pf)(uchar, uchar*))
       max_min = ims.ptr<uchar>(i)[j];
       for ( int u = -radius; u <= radius; u++ ){
         for ( int v = -radius; v <= radius; v++){
-          if ( ((i+u < 0) || (i+u > size_ims.height)) || ((j+v < 0) || (j+v > size_ims.width)) ) //seg fault
-            continue;
-          if (se.ptr<uchar>(u+radius)[v+radius] == 255 ){
-            pf(ims.ptr<uchar>(i+u)[j+v], &max_min);
+          // if ( (i+u < 0) || (i+u > size_ims.height) || (j+v < 0) || (j+v > size_ims.width) ) //seg fault
+          //   continue;
+          if(i+u>=0 && j+v>=0 && i+u<size_ims.height && j+v<size_ims.width){
+            if (se.ptr<uchar>(u+radius)[v+radius] == 255 ){
+              pf(ims.ptr<uchar>(i+u)[j+v], &max_min);
+            }
           }
         }
       }

@@ -14,19 +14,7 @@ process(const char* sename, const char* imsname, const char* imdname)
   //Declare variables
   //Read the image given in value
   Mat ims = imread(imsname, 0);
-  //Check if the image exist
-  if(!ims.data){
-    cerr<<"Image not found, exit"<<endl;
-    exit(EXIT_FAILURE);
-  }
-
   Mat se = imread(sename,0);
-  //Check if the image exist
-  if(!se.data){
-    cerr<<"Image not found, exit"<<endl;
-    exit(EXIT_FAILURE);
-  }
-
   Mat imd_inter(ims.size(), CV_8UC1);
   Mat imd(ims.size(), CV_8UC1);
   mm(se, ims, imd_inter, maximum);
