@@ -11,7 +11,9 @@ enum {SQUARE, DIAMOND, DISK, LINE_V, DIAG_R, LINE_H, DIAG_L, CROSS, PLUS};
 void
 process(const int shape, const int halfsize, const char* imdname)
 {
-  cout<< "\n############### exercice : make-se  ###############\n"<<endl;
+  cout<<"\n---------------------------------------------------\n"<<endl;
+  cout<<"\n--------------- EXERCICE : MAKE-SE  ---------------\n"<<endl;
+  cout<<"\n---------------------------------------------------\n"<<endl;
   //Create variables
   int mat_size = 2 * halfsize + 1;
   Mat imd = Mat::zeros( mat_size, mat_size, CV_8UC1);

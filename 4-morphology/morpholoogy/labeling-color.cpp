@@ -43,9 +43,9 @@ _add(int p, int r, int* roots)
 void
 process(const char* imsname, const char* regname, const char* colorname)
 {
-  // (void) regname;
-  // (void) colorname;
-  cout<< "\n############### exercice : labeling-color ###############\n"<<endl;
+  cout<<"\n---------------------------------------------------------\n"<<endl;
+  cout<<"\n--------------- EXERCICE : LABELING-COLOR ---------------\n"<<endl;
+  cout<<"\n---------------------------------------------------------\n"<<endl;
 
   Mat ims = imread(imsname);
   Size ims_size = ims.size();
@@ -62,7 +62,7 @@ process(const char* imsname, const char* regname, const char* colorname)
   int p      = 0;
   int r      = -1;
   uchar* ps  = ims.data; //get data from ims
-  const int NB_COLORS = 20;
+  int NB_COLORS = 20;
   RNG rng(125862);
 
   for(int i=0; i<rows; i++){
@@ -109,10 +109,10 @@ process(const char* imsname, const char* regname, const char* colorname)
   imd_cellr.ptr<uchar>(i)[j] = roots[p];
     }
   }
+  NB_COLORS = l;
   //Save the image imd_cellr
   // imwrite(regname,imd_cellr);
   imshow(regname,imd_cellr);
-
 
   //Make the eqalize histogram of the imd_cellr to fill imd_cellrh
   equalizeHist(imd_cellr, imd_cellrh);
@@ -132,12 +132,10 @@ process(const char* imsname, const char* regname, const char* colorname)
     }
 
   }
-  imshow(colorname, imd_cellc);
+
   imwrite(colorname,imd_cellc);
   cout<<"labeling: "<< l << " components detected"<<endl;
   delete [] roots;
-
-  waitKey(0);
 }
 
 void

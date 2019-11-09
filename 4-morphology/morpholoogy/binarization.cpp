@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include "erosion.cpp"
+#include <opencv2/opencv.hpp>
 
 using namespace cv;
 using namespace std;
@@ -8,28 +8,21 @@ using namespace std;
 void
 process(int thmin, int thmax, const char* imsname, const char* imdname)
 {
-  (void)thmin;
-  (void)thmax;
-
-  // process("disk-10.png", imsname, "gear_erosion.png");
-  // Mat ims_full(imread(imsname, 0));
-  // Mat ims_diff(ims_full - ims_erosion);
+  (void) thmax;
   Mat ims = imread(imsname, 0);
+  Size ims_s = ims.size();
   Mat imd (ims.size(),CV_8UC1);
 
-  for (int i=0; i<ims.rows; i++ ){
-    for( int j=0; j<ims.cols; j++){
-      if( ims.ptr<uchar>(i)[j] < thmin){
-        imd.ptr<uchar>(i)[j] =0;
+  for (int i=0; i<ims_s.height; i++ ){
+    for( int j=0; j<ims_s.width; j++){
+      if(ims.ptr<uchar>(i)[j] > thmin && ims.ptr<uchar>(i)[j] <= thmax){
+        imd.ptr<uchar>(i)[j] = 255;
       }
-      else if( ims.ptr<uchar>(i)[j] < thmax && ims.ptr<uchar>(i)[j] >= thmax){
-        imd.ptr<uchar>(i)[j] =255;
+      else{
+        imd.ptr<uchar>(i)[j] = 0;
       }
     }
   }
-  // namedWindow("gear_res", WINDOW_AUTOSIZE);
-  // imshow("gear_res", ims_diff);
-  // waitKey(0);
 
   imwrite(imdname, imd);
 }

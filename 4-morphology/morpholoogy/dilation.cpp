@@ -9,7 +9,9 @@ using namespace std;
 void
 process(const char* sename, const char* imsname, const char* imdname)
 {
-  cout<< "\n############### exercice : dilation  ###############\n"<<endl;
+  c  cout<<"\n--------------------------------------------------\n"<<endl;
+    cout<<"\n--------------- EXERCICE : DILATION ---------------\n"<<endl;
+    cout<<"\n--------------------------------------------------\n"<<endl;
 
   //Declare variables
   //Read the image given in value
